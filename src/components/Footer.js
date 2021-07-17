@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -9,7 +9,38 @@ import visa from "../assets/visa.png";
 import master from "../assets/master-logo.png";
 import paypal from "../assets/paypal.png";
 
+function isValidEmail(email) {
+  const re =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
 const Footer = () => {
+  const [inputText, setInputText] = useState("");
+  const [msg, setMessage] = useState("");
+  const [error, setError] = useState(false);
+
+  const inputHandler = (e) => {
+    setInputText(e.target.value);
+    if (error) {
+      setError(false);
+    }
+  };
+
+  const formSubmitHandler = (e) => {
+    e.preventDefault();
+    if (!inputText) {
+      setError(true);
+      setMessage("Please, insert your e-mail.");
+      return;
+    } else if (!isValidEmail(inputText.trim())) {
+      setError(true);
+      setMessage("Please, insert a valid e-mail");
+      return;
+    }
+    alert(`Thank you, ${inputText} has bem cadastred`);
+  };
+
   return (
     <FooterContainer>
       <div className="footer-container__row">
@@ -38,15 +69,18 @@ const Footer = () => {
           </ul>
         </div>
         <div className="newsletter">
-          <form>
+          <form onSubmit={formSubmitHandler}>
             <label htmlFor="email">Newsletter</label>
             <div>
               <input
+                onChange={inputHandler}
                 id="email"
                 type="text"
                 placeholder="Digite seu melhor e-mail"
+                className={error ? `error` : ""}
               />
               <button>Inscrever</button>
+              {error ? <span>{msg}</span> : ""}
             </div>
           </form>
         </div>
@@ -118,6 +152,15 @@ const FooterContainer = styled.footer`
         margin-bottom: 1rem;
       }
       div {
+        position: relative;
+        span {
+          color: red;
+          font-size: 13px;
+          position: absolute;
+          bottom: -20px;
+          left: 5px;
+          font-style: italic;
+        }
         input {
           padding: 0.895rem 1.3rem;
           font-size: 20px;
@@ -129,6 +172,10 @@ const FooterContainer = styled.footer`
           &:placeholder {
             color: #a8a4a4;
           }
+        }
+        input.error {
+          border: 1px solid #ff1d1d;
+          background: #fc292914;
         }
         button {
           padding: 0.895rem 1.6rem;
