@@ -136,6 +136,9 @@ const FooterContainer = styled.footer`
           }
           span {
             font-size: 20px;
+            &:hover {
+              text-decoration: underline;
+            }
           }
         }
       }
@@ -208,6 +211,7 @@ const FooterContainer = styled.footer`
     .social-media {
       i {
         margin-right: 10px;
+        cursor: pointer;
       }
     }
     .payments {
@@ -215,6 +219,7 @@ const FooterContainer = styled.footer`
       display: flex;
       div {
         width: 3rem;
+        cursor: pointer;
         height: 3rem;
         display: flex;
         align-items: center;
